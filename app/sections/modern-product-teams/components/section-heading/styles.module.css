@@ -1,0 +1,85 @@
+.top__container {
+	@apply grid grid-cols-4 md:grid-cols-12 gap-6;
+}
+
+.top__container .heading {
+	@apply col-start-1 col-end-5 md:col-end-13 lg:col-end-7;
+}
+
+.top__container .heading h2 {
+	@apply flex flex-col items-start font-medium text-[var(--color-text-primary)] mb-8 lg:mb-0;
+	line-height: 1.1;
+	letter-spacing: -0.0325em;
+	font-variation-settings: 'opsz' 28;
+}
+
+.top__container .heading h2 .line1,
+.top__container .heading h2 .line2,
+.top__container .heading h2 .line3 {
+	@apply block w-full;
+}
+
+.top__container .heading h2 .line1 {
+	@apply mb-1 md:mb-2;
+}
+
+.top__container .heading h2 .line2 {
+	@apply mb-1 md:mb-2;
+}
+
+.top__container .description {
+	@apply col-start-1 col-end-5 md:col-end-9 lg:col-start-8 lg:col-end-13 self-center;
+	@apply bg-[rgba(255,255,255,0.02)] rounded-lg p-6 lg:p-8;
+}
+
+.top__container .description p {
+	@apply text-balance text-[17px] leading-[1.6] font-medium text-[var(--color-text-tertiary)];
+	@apply max-w-[38rem] mx-auto lg:mx-0;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) and (max-width: 1023px) {
+	.top__container {
+		@apply gap-6;
+	}
+
+	.top__container .heading h2 {
+		font-size: 4.5rem;
+	}
+
+	.top__container .description {
+		@apply mt-6;
+	}
+}
+
+@media (max-width: 767px) {
+	.top__container {
+		@apply gap-4;
+	}
+
+	.top__container .heading h2 {
+		font-size: 2.25rem;
+	}
+
+	.top__container .description {
+		@apply p-4 mt-4;
+	}
+
+	.top__container .heading h2 .line1,
+	.top__container .heading h2 .line2,
+	.top__container .heading h2 .line3 {
+		@apply whitespace-normal;
+	}
+}
+
+@media (min-width: 1024px) {
+	.top__container .heading h2 {
+		font-size: 4rem;
+	}
+
+	.top__container .heading h2 .line1,
+	.top__container .heading h2 .line2,
+	.top__container .heading h2 .line3 {
+		@apply whitespace-nowrap;
+	}
+}

@@ -1,0 +1,40 @@
+.modern__product__teams {
+	@apply py-8 sm:py-[60px] isolate;
+	background: linear-gradient(
+		180deg,
+		transparent,
+		rgba(97, 106, 115, 0.12) 40%,
+		rgba(97, 106, 115, 0.12) 60%,
+		rgba(97, 106, 115, 0)
+	);
+}
+
+.hero__container {
+	@apply grid gap-12 lg:grid-cols-[1fr,1.2fr] items-center;
+}
+
+.content__wrapper {
+	@apply flex flex-col gap-8;
+}
+
+.carousel__wrapper {
+	@apply relative w-full overflow-visible;
+}
+
+/* Add 3D perspective container for carousel */
+.carousel__wrapper::before {
+	content: '';
+	@apply absolute inset-0 pointer-events-none;
+	background: radial-gradient(circle at center right, rgba(255,255,255,0.1), transparent 80%);
+	z-index: 1;
+}
+
+@media (max-width: 1023px) {
+	.hero__container {
+		@apply grid-cols-1 gap-8;
+	}
+	
+	.content__wrapper {
+		@apply text-center;
+	}
+}

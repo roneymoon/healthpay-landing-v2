@@ -1,0 +1,21 @@
+.realtime__approval {
+	@apply relative;
+}
+
+.realtime__approval .icon__container {
+	--icon-text: rgba(104, 204, 88, 1);
+	--icon-bg: rgba(34, 54, 32, 0.5);
+	@apply mb-8 flex justify-center items-center w-9 h-9 rounded-lg bg-[var(--icon-bg)] text-[var(--icon-text)];
+}
+
+.realtime__approval .icon__container svg {
+	@apply flex-shrink-0 fill-[var(--icon-text)];
+}
+
+.realtime__approval .heading {
+	@apply text-[17px] leading-6 tracking-[-0.22px] font-medium mb-3 text-[var(--color-text-primary)];
+}
+
+.realtime__approval .description {
+	@apply text-[15px] leading-[23px] tracking-[-0.16px] text-[var(--color-text-tertiary)];
+} 

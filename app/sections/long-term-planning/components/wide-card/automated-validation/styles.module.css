@@ -1,0 +1,17 @@
+.automated__validation {
+	@apply relative;
+}
+
+.automated__validation .icon__container {
+	--icon-text: rgba(104, 204, 88, 1);
+	--icon-bg: rgba(34, 54, 32, 0.5);
+	@apply mb-8 flex items-center justify-center w-9 h-9 bg-[var(--icon-bg)] text-[var(--icon-text)] rounded-lg;
+}
+
+.automated__validation .heading {
+	@apply block mb-4 text-[17px] leading-[24px] tracking-[-0.22px] font-medium text-[var(--color-text-primary)];
+}
+
+.automated__validation .paragraph {
+	@apply block mb-6 text-balance text-[var(--color-text-tertiary)] text-[15px] leading-[23px] tracking-[-0.12px];
+} 

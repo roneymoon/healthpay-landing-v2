@@ -1,0 +1,17 @@
+.smart__claims {
+	@apply relative;
+}
+
+.smart__claims .icons__container {
+	--icon-text: rgba(104, 204, 88, 1);
+	--icon-bg: rgba(34, 54, 32, 0.5);
+	@apply flex items-center justify-center w-9 h-9 mb-8 bg-[var(--icon-bg)] text-[var(--icon-text)] rounded-lg;
+}
+
+.smart__claims .heading {
+	@apply block mb-3 text-[17px] leading-[24px] tracking-[-0.22px] font-medium text-[var(--color-text-primary)];
+}
+
+.smart__claims .paragraph {
+	@apply text-[var(--color-text-tertiary)] text-[15px] leading-[23px] tracking-[-0.16px] block mb-6;
+} 

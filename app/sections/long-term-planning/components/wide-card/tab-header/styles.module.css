@@ -1,0 +1,18 @@
+.tab__header {
+	@apply col-start-1 col-end-5 text-[var(--color-text-quaternary)];
+}
+
+.tab__header .heading {
+	@apply mt-16 mb-6 text-[var(--color-text-primary)] font-medium flex flex-col items-start;
+	font-size: clamp(1.75rem, 2vw + 1rem, 2.5rem);
+	line-height: 1.2;
+	letter-spacing: -0.02em;
+}
+
+.tab__header .heading .line {
+	@apply block whitespace-nowrap;
+}
+
+.toggle__header {
+	@apply flex flex-col gap-2;
+}
