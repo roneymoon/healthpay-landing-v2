@@ -4,6 +4,7 @@ import React, { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
+import Image from 'next/image';
 
 export function ExpandableCard() {
   const [active, setActive] = useState<(typeof cards)[number] | boolean | null>(null);
@@ -63,7 +64,7 @@ export function ExpandableCard() {
                 layoutId={`image-${active.title}-${id}`}
                 className="relative"
               >
-                <img
+                <Image
                   width={200}
                   height={200}
                   src={active.src}
@@ -127,7 +128,7 @@ export function ExpandableCard() {
                   layoutId={`image-${card.title}-${id}`}
                   className="relative rounded-2xl overflow-hidden aspect-[4/3]"
                 >
-                  <img
+                  <Image
                     width={100}
                     height={100}
                     src={card.src}
@@ -229,7 +230,7 @@ const cards = [
       content: () => (
         <p>
           HealthPay uses intelligent matching algorithms to recommend suitable insurance policies based
-          on a patient's history, preferences, and current treatments. This empowers agents and users to
+          on a patients history, preferences, and current treatments. This empowers agents and users to
           compare, enroll, and track insurance in a seamless, intuitive experience.
         </p>
       ),

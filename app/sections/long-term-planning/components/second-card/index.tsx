@@ -23,7 +23,7 @@ const updateCards: UpdateCardProps[] = [
 	  id: 'update-card-3',
 	  badge: <OffTrack />,
 	  badgeTitle: 'Pending Documents',
-	  title: 'We\'ve requested additional documents from the claimant.',
+	  title: `We&apos;ve requested additional documents from the claimant.`,
 	  time: 'Jul 17',
 	},
 ];
