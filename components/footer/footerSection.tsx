@@ -1,21 +1,25 @@
 import { type FC } from 'react'
 import { type FooterSection } from '@/lib/constant'
-import styles from './styles.module.css'
 import Link from 'next/link'
 
 const FooterSection: FC<FooterSection> = ({ items, title }) => {
-	return (
-		<div className={styles.footer__section}>
-			<h3 className={styles.footer__section__title}> {title} </h3>
-			<ul className={styles.footer__section__list}>
-				{items.map(({ id, item, link }) => (
-					<li key={id} className={styles.item}>
-						<Link href={link}> {item} </Link>
-					</li>
-				))}
-			</ul>
-		</div>
-	)
+  return (
+    <div className="flex flex-col">
+      <h3 className="text-sm font-medium text-white mb-4">{title}</h3>
+      <ul className="space-y-3">
+        {items.map(({ id, item, link }) => (
+          <li key={id}>
+            <Link 
+              href={link}
+              className="text-sm text-gray-400 hover:text-white transition-colors duration-300"
+            >
+              {item}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
 }
 
 export default FooterSection

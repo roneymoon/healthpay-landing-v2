@@ -1,20 +1,14 @@
 import type { Metadata } from 'next'
+import { Bricolage_Grotesque } from 'next/font/google'
 import Header from '@/components/header'
 import Footer from '@/components/footer'
 import './globals.css'
 import { cn } from '@/lib/utils'
-import { Sora, Space_Grotesk } from 'next/font/google'
 
-const sora = Sora({
+const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
-  variable: '--font-sora',
   display: 'swap',
-})
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  variable: '--font-space-grotesk',
-  display: 'swap',
+  variable: '--font-bricolage',
 })
 
 export const metadata: Metadata = {
@@ -25,20 +19,22 @@ export const metadata: Metadata = {
     shortcut: '/healthpay.png',
     apple: '/healthpay.png',
   },
-};
+}
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode
-}>) {
+}) {
   return (
-    <html lang='en'>	
-      <body className={cn(sora.className, spaceGrotesk.className)}>
+    <html lang="en" className={bricolage.variable}>
+      <body className={cn("font-bricolage min-h-screen bg-black")}>
         <Header />
-        {children}
+        <main>
+          {children}
+        </main>
         <Footer />
       </body>
     </html>
-  );
+  )
 }

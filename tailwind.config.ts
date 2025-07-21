@@ -35,6 +35,19 @@ const config = {
       fontFamily: {
         heading: ["var(--font-sora)", "sans-serif"],
         body: ["var(--font-space-grotesk)", "sans-serif"],
+        bricolage: ['var(--font-bricolage)'],
+      },
+      boxShadow: {
+        'nav': '0px 4px 12px rgba(0, 0, 0, 0.1)',
+      },
+      colors: {
+        'primary': '#0066FF',
+        'primary-dark': '#0052CC',
+        'dark': '#111111',
+        'light-grey': '#F5F5F5',
+      },
+      borderRadius: {
+        '4xl': '32px',
       },
     },
   },
