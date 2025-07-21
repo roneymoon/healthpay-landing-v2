@@ -23,7 +23,7 @@ const Hero: FC = () => {
 		<section className={styles.hero}>
 			<LayoutWrapper>
 				<h1 className={cn(styles.heading, styles.hide__mobile)}>
-					<BlurPopUpByWord text="AI-Powered Claims Engine for India's Health Insurance Ecosystem" />
+					<BlurPopUpByWord text="AI-Powered Claims Engine for India&apos;s Health Insurance Ecosystem" />
 				</h1>
 
 				<h1 className={cn(styles.heading, styles.show__mobile, "text-center")}>
