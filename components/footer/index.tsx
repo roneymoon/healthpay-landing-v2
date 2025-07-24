@@ -53,6 +53,29 @@ export default function Footer() {
   const rawFooterScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.95, 0.98, 1]);
   const footerScale = useSpring(rawFooterScale, { stiffness: 100, damping: 30 });
 
+  // Pre-calculate transforms for background elements
+  const purpleCircleX = useTransform(scrollYProgress, [0, 1], [0, 50]);
+  const purpleCircleRotate = useTransform(scrollYProgress, [0, 1], [0, 45]);
+  const indigoCircleX = useTransform(scrollYProgress, [0, 1], [0, -50]);
+  const indigoCircleRotate = useTransform(scrollYProgress, [0, 1], [0, -45]);
+  const orangeCircleScale = useTransform(scrollYProgress, [0, 1], [0.8, 1.2]);
+
+  // Pre-calculate transforms for brand name and social links
+  const brandNameY = useTransform(scrollYProgress, [0.2, 1], [20, 0]);
+  const brandNameOpacity = useTransform(scrollYProgress, [0.2, 0.6, 1], [0, 0.8, 1]);
+  const socialLinksY = useTransform(scrollYProgress, [0.3, 1], [30, 0]);
+  const socialLinksOpacity = useTransform(scrollYProgress, [0.3, 0.7, 1], [0, 0.7, 1]);
+  
+  // Pre-calculate transforms for individual social links
+  const socialLinkTransforms = socialLinks.map((_, index) => ({
+    y: useTransform(scrollYProgress, [0.4, 1], [20, 0]),
+    opacity: useTransform(scrollYProgress, [0.4 + index * 0.05, 0.7 + index * 0.05, 1], [0, 0.8, 1]),
+  }));
+  
+  // Pre-calculate transforms for contact section
+  const contactY = useTransform(scrollYProgress, [0.5, 1], [40, 0]);
+  const contactOpacity = useTransform(scrollYProgress, [0.5, 0.8, 1], [0, 0.8, 1]);
+
   return (
     <div ref={containerRef} className="relative h-[102vh]">
       {/* Sticky container */}
@@ -73,8 +96,8 @@ export default function Footer() {
                 left: "-20%",
                 width: "60%",
                 height: "60%",
-                x: useTransform(scrollYProgress, [0, 1], [0, 50]),
-                rotate: useTransform(scrollYProgress, [0, 1], [0, 45]),
+                x: purpleCircleX,
+                rotate: purpleCircleRotate,
               }}
             />
             <motion.div 
@@ -84,8 +107,8 @@ export default function Footer() {
                 right: "-20%",
                 width: "60%",
                 height: "60%",
-                x: useTransform(scrollYProgress, [0, 1], [0, -50]),
-                rotate: useTransform(scrollYProgress, [0, 1], [0, -45]),
+                x: indigoCircleX,
+                rotate: indigoCircleRotate,
               }}
             />
             <motion.div 
@@ -97,7 +120,7 @@ export default function Footer() {
                 height: "40%",
                 x: "-50%",
                 y: "-50%",
-                scale: useTransform(scrollYProgress, [0, 1], [0.8, 1.2]),
+                scale: orangeCircleScale,
               }}
             />
           </div>
@@ -107,27 +130,27 @@ export default function Footer() {
             <motion.h2 
               className="bg-orange-500 font-bricolage text-transparent bg-clip-text text-5xl sm:text-6xl md:text-8xl lg:text-9xl text-center"
               style={{
-                y: useTransform(scrollYProgress, [0.2, 1], [20, 0]),
-                opacity: useTransform(scrollYProgress, [0.2, 0.6, 1], [0, 0.8, 1]),
+                y: brandNameY,
+                opacity: brandNameOpacity,
               }}
             >
-              Let's Health<span className="font-bold">Pay</span>
+              Let&apos;s Health<span className="font-bold">Pay</span>
             </motion.h2>
             
             {/* Social Links */}
             <motion.div 
               className="flex flex-wrap justify-center gap-4 sm:gap-6"
               style={{
-                y: useTransform(scrollYProgress, [0.3, 1], [30, 0]),
-                opacity: useTransform(scrollYProgress, [0.3, 0.7, 1], [0, 0.7, 1]),
+                y: socialLinksY,
+                opacity: socialLinksOpacity,
               }}
             >
               {socialLinks.map((link, index) => (
                 <motion.div
                   key={link.name}
                   style={{
-                    y: useTransform(scrollYProgress, [0.4, 1], [20, 0]),
-                    opacity: useTransform(scrollYProgress, [0.4 + index * 0.05, 0.7 + index * 0.05, 1], [0, 0.8, 1]),
+                    y: socialLinkTransforms[index].y,
+                    opacity: socialLinkTransforms[index].opacity,
                   }}
                 >
                   <Link
@@ -150,12 +173,12 @@ export default function Footer() {
             <motion.div 
               className="w-full border-t border-gray-200 pt-4 sm:pt-6"
               style={{
-                y: useTransform(scrollYProgress, [0.5, 1], [40, 0]),
-                opacity: useTransform(scrollYProgress, [0.5, 0.8, 1], [0, 0.8, 1]),
+                y: contactY,
+                opacity: contactOpacity,
               }}
             >
               <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-4 text-sm sm:text-base text-gray-600">
-                <p className="text-center sm:text-left"> 2024 HealthPay. All rights reserved.</p>
+                <p className="text-center sm:text-left">&copy; 2024 HealthPay. All rights reserved.</p>
                 <a
                   href="mailto:hello@letshealthpay.com"
                   className="text-gray-700 hover:text-gray-900 transition-colors duration-300 flex items-center gap-2 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-orange-500"
