@@ -33,21 +33,24 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       fontFamily: {
-        heading: ["var(--font-sora)", "sans-serif"],
-        body: ["var(--font-space-grotesk)", "sans-serif"],
-        bricolage: ['var(--font-bricolage)'],
+        'bricolage': ['var(--font-bricolage)', '"Bricolage Grotesque"', 'sans-serif'],
+        'grotesque': ['var(--font-bricolage)', '"Bricolage Grotesque"', 'sans-serif'],
+        'sans': ['var(--font-bricolage)', '"Bricolage Grotesque"', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'sans-serif'],
       },
       boxShadow: {
         'nav': '0px 4px 12px rgba(0, 0, 0, 0.1)',
       },
       colors: {
-        'primary': '#0066FF',
-        'primary-dark': '#0052CC',
+        'primary': '#FF6B35',
+        'primary-dark': '#FF8A3D',
         'dark': '#111111',
         'light-grey': '#F5F5F5',
       },
       borderRadius: {
         '4xl': '32px',
+      },
+      backgroundImage: {
+        'gradient-orangish': "linear-gradient(to bottom, rgba(255,106,0,0.05), rgba(0,0,0,0.95))",
       },
     },
   },

@@ -1,7 +1,7 @@
 import { type FC } from "react";
 import styles from "./styles.module.css";
 import SectionHeading from "@/components/sectionHeading";
-import Carousel from "./components/carousel";
+import Blogs from "./Blogs";
 import LayoutWrapper from "@/components/layout-wrapper";
 
 const Collaborate: FC = () => {
@@ -28,7 +28,7 @@ const Collaborate: FC = () => {
       </LayoutWrapper>
 
       <div className={styles.carousel__container}>
-        <Carousel />
+        <Blogs />
       </div>
     </section>
   );

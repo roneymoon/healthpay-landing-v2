@@ -20,4 +20,46 @@
 
 .carousel__container {
 	@apply mt-12;
+	/* Remove any existing carousel-specific styles that might conflict */
+	padding: 0;
+	margin-top: 3rem;
+}
+
+/* Blog Section Styles - Dark Theme */
+.blogsSection {
+    padding: 0;
+    margin: 0;
+}
+
+.blogsContainer {
+    width: 100%;
+}
+
+.blogsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(336px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+    padding: 0 var(--page-padding-left, 2rem) 0 var(--page-padding-right, 2rem);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Mobile responsiveness for blog section */
+@media (max-width: 768px) {
+    .blogsGrid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 0 1rem;
+    }
+    
+    .blogsSection {
+        padding: 0;
+    }
+}
+
+@media (max-width: 640px) {
+    .blogsGrid {
+        padding: 0 var(--page-padding-default, 1.5rem);
+    }
 }

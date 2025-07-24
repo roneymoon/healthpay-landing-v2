@@ -1,0 +1,80 @@
+.blogs {
+  @apply relative py-16 lg:py-24 overflow-hidden;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(15, 23, 42, 0.95) 50%,
+    rgba(0, 0, 0, 0.95) 100%
+  );
+}
+
+.header {
+  @apply mb-12 text-center relative;
+}
+
+.connectionStatus {
+  @apply flex justify-center mt-4;
+}
+
+.statusIndicator {
+  @apply flex items-center gap-2 px-3 py-1 rounded-full text-sm;
+  @apply bg-gray-800/50 border backdrop-blur-sm;
+}
+
+.connected {
+  @apply border-green-500/30 text-green-400;
+}
+
+.disconnected {
+  @apply border-gray-500/30 text-gray-400;
+}
+
+.statusDot {
+  @apply w-2 h-2 rounded-full;
+}
+
+.connected .statusDot {
+  @apply bg-green-400;
+  animation: pulse 2s infinite;
+}
+
+.disconnected .statusDot {
+  @apply bg-gray-400;
+}
+
+.statusText {
+  @apply font-medium;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.blogs__grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8;
+}
+
+.carousel {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+  @apply max-w-7xl mx-auto;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .blogs {
+    @apply py-12;
+  }
+  
+  .blogs__grid {
+    @apply gap-6;
+  }
+  
+  .header {
+    @apply mb-8;
+  }
+}

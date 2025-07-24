@@ -9,14 +9,14 @@ import PreFooter from './sections/prefooter'
 import AmbientLighting from '@/components/ambient-lighting'
 
 const Home: FC = () => {
-	return (
-		<main className=' min-h-screen pt-[calc(var(--header-top)+var(--header-height))]'>
+		return (
+			<main  className="min-h-screen pt-[calc(var(--header-top)+var(--header-height))]">
 			<AmbientLighting />
 			<Hero />
 			<Customers />
 			<ModernProductTeams />
 			<LongTermPlanning />
-			<IssueTracking />
+			{/* <IssueTracking /> */}
 			<Collaborate />
 			<PreFooter />
 		</main>

@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
 import { Bricolage_Grotesque } from 'next/font/google'
 import Header from '@/components/header'
-import Footer from '@/components/footer'
 import './globals.css'
 import { cn } from '@/lib/utils'
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
   display: 'swap',
+  weight: ['200', '300', '400', '500', '600', '700', '800'],
   variable: '--font-bricolage',
 })
 
@@ -33,7 +33,6 @@ export default function RootLayout({
         <main>
           {children}
         </main>
-        <Footer />
       </body>
     </html>
   )

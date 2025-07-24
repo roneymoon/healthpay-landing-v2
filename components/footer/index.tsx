@@ -1,8 +1,7 @@
-import { type FC } from 'react'
-import Link from 'next/link'
-import { MdArrowOutward } from 'react-icons/md'
-import { footerSections } from '@/lib/constant'
-import FooterSection from './footerSection'
+import Link from "next/link";
+import { useRef } from "react";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { MdArrowOutward } from "react-icons/md";
 
 const socialLinks = [
   { name: "Book a Demo", href: "https://cal.com/bhavishramaswamy/30min" },
@@ -13,8 +12,8 @@ const socialLinks = [
 
 const DecorativeElements = () => (
   <>
-    <div className="absolute -top-1/2 -left-1/4 w-1/2 h-1/2 rounded-full blur-3xl bg-blue-600/5" />
-    <div className="absolute -bottom-1/2 -right-1/4 w-1/2 h-1/2 rounded-full blur-3xl bg-indigo-600/5" />
+    <div className="absolute rounded-full blur-3xl -top-1/3 -left-1/4 w-3/4 h-3/4 bg-purple-600/10" />
+    <div className="absolute rounded-full blur-3xl -bottom-1/3 -right-1/4 w-3/4 h-3/4 bg-indigo-600/10" />
   </>
 );
 
@@ -24,63 +23,151 @@ const SocialLinks = () => (
       <Link
         key={link.name}
         href={link.href}
-        className="group relative focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:ring-offset-2 focus:ring-offset-black rounded"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group relative focus:outline-none focus:ring focus:ring-offset-2 focus:ring-orange-500"
       >
-        <span className="flex items-center gap-2 text-base sm:text-lg text-gray-400 hover:text-white transition duration-300">
+        <span className="flex items-center gap-2 text-base sm:text-lg text-gray-700 hover:text-gray-900 transition duration-300">
           {link.name}
           <MdArrowOutward className="group-hover:rotate-45 transition-transform duration-300" />
         </span>
-        <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-gradient-to-r from-blue-500/50 to-indigo-600/50 group-hover:w-full transition-all duration-300" />
+        <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-gradient-to-r from-orange-400 to-orange-600 group-hover:w-full transition-all duration-300" />
       </Link>
     ))}
   </div>
 );
 
 export default function Footer() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end end"],
+  });
+
+  // Footer reveal with smooth spring - fixed at bottom, only opacity changes
+  const rawFooterOpacity = useTransform(scrollYProgress, [0, 0.4, 0.7, 1], [0, 0, 0.8, 1]);
+  const footerOpacity = useSpring(rawFooterOpacity, { stiffness: 120, damping: 25 });
+  
+  // Scale effect for footer elements - subtle scale for depth
+  const rawFooterScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.95, 0.98, 1]);
+  const footerScale = useSpring(rawFooterScale, { stiffness: 100, damping: 30 });
+
   return (
-    <footer className="relative w-full bg-black">
-      <div className="relative w-full">
-        <div className="w-full flex flex-col items-center justify-end py-12 sm:py-16 bg-black relative overflow-hidden">
-          {/* Decorative Elements */}
-          <div className="absolute inset-0 overflow-hidden">
-            <DecorativeElements />
+    <div ref={containerRef} className="relative h-[102vh]">
+      {/* Sticky container */}
+      <div className="sticky top-0 h-screen w-full overflow-hidden">
+        <motion.div
+          style={{
+            opacity: footerOpacity,
+            scale: footerScale,
+          }}
+          className="absolute inset-0 bg-gray-50 flex items-end justify-center pb-20"
+        >
+          {/* Animated background elements */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <motion.div 
+              className="absolute rounded-full blur-3xl bg-purple-600/8" 
+              style={{
+                top: "-30%",
+                left: "-20%",
+                width: "60%",
+                height: "60%",
+                x: useTransform(scrollYProgress, [0, 1], [0, 50]),
+                rotate: useTransform(scrollYProgress, [0, 1], [0, 45]),
+              }}
+            />
+            <motion.div 
+              className="absolute rounded-full blur-3xl bg-indigo-600/8" 
+              style={{
+                bottom: "-30%",
+                right: "-20%",
+                width: "60%",
+                height: "60%",
+                x: useTransform(scrollYProgress, [0, 1], [0, -50]),
+                rotate: useTransform(scrollYProgress, [0, 1], [0, -45]),
+              }}
+            />
+            <motion.div 
+              className="absolute rounded-full blur-2xl bg-orange-400/5" 
+              style={{
+                top: "50%",
+                left: "50%",
+                width: "40%",
+                height: "40%",
+                x: "-50%",
+                y: "-50%",
+                scale: useTransform(scrollYProgress, [0, 1], [0.8, 1.2]),
+              }}
+            />
           </div>
-
-          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6">
-            {/* Main Footer Content */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-              {footerSections.map((section, index) => (
-                <FooterSection key={index} {...section} />
-              ))}
-            </div>
-
-            {/* Brand Section */}
-            <div className="w-full flex flex-col items-center gap-8 sm:gap-12 relative z-10 border-t border-white/10 pt-12">
-              <h2 className="bg-gradient-to-r from-blue-400/90 to-indigo-500/90 font-bricolage text-transparent bg-clip-text text-5xl sm:text-6xl md:text-7xl font-bold">
-                Let's Health<span>Pay</span>
-              </h2>
-
-              <div className="flex flex-col items-center gap-6 w-full">
-                <SocialLinks />
-              </div>
-
-              {/* Contact Section */}
-              <div className="w-full border-t border-white/10 pt-4 sm:pt-6">
-                <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-4 text-sm sm:text-base text-gray-500">
-                  <p className="text-center sm:text-left">© 2024 HealthPay. All rights reserved.</p>
-                  <a
-                    href="mailto:hello@letshealthpay.com"
-                    className="text-gray-400 hover:text-white transition-colors duration-300 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:ring-offset-2 focus:ring-offset-black rounded px-2 py-1"
+          
+          <div className="w-full max-w-4xl mx-auto flex flex-col items-center justify-center gap-8 sm:gap-12 relative z-10 px-4 sm:px-6">
+            {/* Brand Name */}
+            <motion.h2 
+              className="bg-orange-500 font-bricolage text-transparent bg-clip-text text-5xl sm:text-6xl md:text-8xl lg:text-9xl text-center"
+              style={{
+                y: useTransform(scrollYProgress, [0.2, 1], [20, 0]),
+                opacity: useTransform(scrollYProgress, [0.2, 0.6, 1], [0, 0.8, 1]),
+              }}
+            >
+              Let's Health<span className="font-bold">Pay</span>
+            </motion.h2>
+            
+            {/* Social Links */}
+            <motion.div 
+              className="flex flex-wrap justify-center gap-4 sm:gap-6"
+              style={{
+                y: useTransform(scrollYProgress, [0.3, 1], [30, 0]),
+                opacity: useTransform(scrollYProgress, [0.3, 0.7, 1], [0, 0.7, 1]),
+              }}
+            >
+              {socialLinks.map((link, index) => (
+                <motion.div
+                  key={link.name}
+                  style={{
+                    y: useTransform(scrollYProgress, [0.4, 1], [20, 0]),
+                    opacity: useTransform(scrollYProgress, [0.4 + index * 0.05, 0.7 + index * 0.05, 1], [0, 0.8, 1]),
+                  }}
+                >
+                  <Link
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative focus:outline-none focus:ring focus:ring-offset-2 focus:ring-orange-500"
                   >
-                    hello@letshealthpay.com
-                    <MdArrowOutward className="inline-block" />
-                  </a>
-                </div>
+                    <span className="flex items-center gap-2 text-base sm:text-lg text-gray-700 hover:text-gray-900 transition duration-300">
+                      {link.name}
+                      <MdArrowOutward className="group-hover:rotate-45 transition-transform duration-300" />
+                    </span>
+                    <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-gradient-to-r from-orange-400 to-orange-600 group-hover:w-full transition-all duration-300" />
+                  </Link>
+                </motion.div>
+              ))}
+            </motion.div>
+            
+            {/* Contact Section */}
+            <motion.div 
+              className="w-full border-t border-gray-200 pt-4 sm:pt-6"
+              style={{
+                y: useTransform(scrollYProgress, [0.5, 1], [40, 0]),
+                opacity: useTransform(scrollYProgress, [0.5, 0.8, 1], [0, 0.8, 1]),
+              }}
+            >
+              <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-4 text-sm sm:text-base text-gray-600">
+                <p className="text-center sm:text-left"> 2024 HealthPay. All rights reserved.</p>
+                <a
+                  href="mailto:hello@letshealthpay.com"
+                  className="text-gray-700 hover:text-gray-900 transition-colors duration-300 flex items-center gap-2 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-orange-500"
+                >
+                  hello@letshealthpay.com
+                  <MdArrowOutward className="inline-block" />
+                </a>
               </div>
-            </div>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       </div>
-    </footer>
+    </div>
   );
 }

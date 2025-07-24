@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useCallback, memo, useMemo } from "react";
+import { useRef, useState, useCallback, memo, useMemo, useEffect } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useScrollDirection } from "@/hooks/navbar/useScrollDirection";
 import useDropdownAnimation from "@/hooks/navbar/useDropdownAnimation";
@@ -17,7 +17,8 @@ const containerVariants = {
       type: "spring",
       stiffness: 300,
       damping: 25,
-      mass: 0.8
+      mass: 0.8,
+      duration: 0.3
     }
   },
   compact: {
@@ -26,7 +27,8 @@ const containerVariants = {
       type: "spring",
       stiffness: 300,
       damping: 25,
-      mass: 0.8
+      mass: 0.8,
+      duration: 0.3
     }
   }
 };
@@ -40,7 +42,8 @@ const backgroundVariants = {
       type: "spring",
       stiffness: 300,
       damping: 25,
-      mass: 0.8
+      mass: 0.8,
+      duration: 0.3
     }
   },
   compact: {
@@ -51,7 +54,8 @@ const backgroundVariants = {
       type: "spring",
       stiffness: 300,
       damping: 25,
-      mass: 0.8
+      mass: 0.8,
+      duration: 0.3
     }
   }
 };
@@ -61,6 +65,8 @@ const Header = () => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const { isCompact, isExpanded, toggleExpanded } = useScrollDirection();
   const prefersReducedMotion = useReducedMotion();
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const transitionTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const activeDropdown = useMemo(() => 
     hoveredItem ? nav_links.find((item) => item.name === hoveredItem)?.dropdown_component : null,
@@ -69,13 +75,44 @@ const Header = () => {
 
   const dropdownScope = useDropdownAnimation(hoveredItem, activeDropdown);
 
-  const handleMouseEnter = useCallback((itemName: string) => {
-    setHoveredItem(itemName);
+  // Reset hover state when transitioning to compact or on scroll
+  useEffect(() => {
+    if (isCompact || isTransitioning) {
+      setHoveredItem(null);
+    }
+  }, [isCompact, isTransitioning]);
+
+  // Cleanup timeouts
+  useEffect(() => {
+    return () => {
+      if (transitionTimeoutRef.current) {
+        clearTimeout(transitionTimeoutRef.current);
+      }
+    };
   }, []);
+
+  const handleMouseEnter = useCallback((itemName: string) => {
+    if (!isTransitioning && !isCompact) {
+      setHoveredItem(itemName);
+    }
+  }, [isTransitioning, isCompact]);
 
   const handleMouseLeave = useCallback(() => {
     setHoveredItem(null);
   }, []);
+
+  const handleExpandClick = useCallback(() => {
+    if (transitionTimeoutRef.current) {
+      clearTimeout(transitionTimeoutRef.current);
+    }
+    
+    setIsTransitioning(true);
+    toggleExpanded(true);
+    
+    transitionTimeoutRef.current = setTimeout(() => {
+      setIsTransitioning(false);
+    }, 300);
+  }, [toggleExpanded]);
 
   // If user prefers reduced motion, use simpler animations
   const animationVariants = useMemo(() => 
@@ -88,15 +125,17 @@ const Header = () => {
 
   const containerClassName = useMemo(() => {
     const baseClass = "relative flex items-center";
-    const widthClass = isCompact && !isExpanded ? "w-[220px]" : "w-[65%]";
-    const dropdownClass = hoveredItem && activeDropdown ? "!w-[65%]" : "";
+    const widthClass = (isCompact && !isExpanded) || isTransitioning ? "w-[220px]" : "w-[65%]";
+    const dropdownClass = hoveredItem && activeDropdown && !isCompact && !isTransitioning ? "!w-[65%]" : "";
     return `${baseClass} ${widthClass} ${dropdownClass}`.trim();
-  }, [isCompact, isExpanded, hoveredItem, activeDropdown]);
+  }, [isCompact, isExpanded, hoveredItem, activeDropdown, isTransitioning]);
 
   const containerStyle = useMemo(() => ({ 
     minHeight: isCompact ? "3rem" : "4rem",
-    maxHeight: isCompact ? "3rem" : "4rem"
-  }), [isCompact]);
+    maxHeight: isCompact ? "3rem" : "4rem",
+    pointerEvents: isTransitioning ? "none" : "auto",
+    transition: "all 0.3s ease-in-out"
+  }), [isCompact, isTransitioning]);
 
   return (
     <motion.div
@@ -106,6 +145,7 @@ const Header = () => {
       variants={animationVariants}
       initial={false}
       layout="position"
+      transition={{ duration: 0.3 }}
     >
       <motion.div
         className={containerClassName}
@@ -123,10 +163,10 @@ const Header = () => {
         />
 
         <AnimatePresence mode="wait" initial={false}>
-          {isCompact && !isExpanded ? (
+          {(isCompact && !isExpanded) || isTransitioning ? (
             <CompactNavbarButtons 
               key="compact"
-              onExpandClick={() => toggleExpanded(true)} 
+              onExpandClick={handleExpandClick}
             />
           ) : (
             <ExpandedNavbar
@@ -139,7 +179,7 @@ const Header = () => {
 
         {/* Dropdown and Mobile Menu */}
         <AnimatePresence mode="wait">
-          {activeDropdown && (
+          {activeDropdown && !isCompact && !isTransitioning && (
             <motion.div 
               className="absolute left-0 right-0 top-[calc(100%+0.5rem)] mt-0"
               initial={{ opacity: 0, y: 10 }}

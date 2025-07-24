@@ -23,6 +23,8 @@ export const useScrollDirection = () => {
 
   // Throttle scroll updates
   const throttleTimeout = useRef<number | null>(null);
+  const expandTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const forceCompactTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleScroll = useCallback(() => {
     if (throttleTimeout.current !== null) return;
@@ -33,20 +35,41 @@ export const useScrollDirection = () => {
       
       const isScrollingUp = currentScrollY < prevState.lastScrollY;
       const isAtTop = currentScrollY < 10;
-      const shouldUpdate = 
-        prevState.isScrollingUp !== isScrollingUp ||
-        prevState.isAtTop !== isAtTop ||
-        prevState.lastScrollY !== currentScrollY ||
-        prevState.isCompact !== (!isAtTop && !isScrollingUp && !prevState.isExpanded);
 
-      if (shouldUpdate) {
-        setState({
-          ...prevState,
+      // Clear any pending timeouts
+      if (expandTimeoutRef.current) {
+        clearTimeout(expandTimeoutRef.current);
+        expandTimeoutRef.current = null;
+      }
+
+      if (forceCompactTimeoutRef.current) {
+        clearTimeout(forceCompactTimeoutRef.current);
+        forceCompactTimeoutRef.current = null;
+      }
+
+      // Force compact mode when scrolling down and not at top
+      const shouldForceCompact = !isAtTop && !isScrollingUp && currentScrollY > 100;
+      
+      if (shouldForceCompact && !prevState.isCompact) {
+        setState(prev => ({
+          ...prev,
           isScrollingUp,
           isAtTop,
           lastScrollY: currentScrollY,
-          isCompact: !isAtTop && !isScrollingUp && !prevState.isExpanded,
-        });
+          isCompact: true,
+          isExpanded: false
+        }));
+      } else {
+        // Normal scroll behavior
+        const newIsCompact = !isAtTop && !isScrollingUp;
+        
+        setState(prev => ({
+          ...prev,
+          isScrollingUp,
+          isAtTop,
+          lastScrollY: currentScrollY,
+          isCompact: prev.isExpanded ? false : newIsCompact,
+        }));
       }
 
       throttleTimeout.current = null;
@@ -62,15 +85,43 @@ export const useScrollDirection = () => {
       if (throttleTimeout.current !== null) {
         window.cancelAnimationFrame(throttleTimeout.current);
       }
+      if (expandTimeoutRef.current !== null) {
+        clearTimeout(expandTimeoutRef.current);
+      }
+      if (forceCompactTimeoutRef.current !== null) {
+        clearTimeout(forceCompactTimeoutRef.current);
+      }
     };
   }, [handleScroll]);
 
   const toggleExpanded = useCallback((expanded: boolean) => {
+    // Clear any pending timeouts
+    if (expandTimeoutRef.current) {
+      clearTimeout(expandTimeoutRef.current);
+      expandTimeoutRef.current = null;
+    }
+    if (forceCompactTimeoutRef.current) {
+      clearTimeout(forceCompactTimeoutRef.current);
+      forceCompactTimeoutRef.current = null;
+    }
+
     setState(prev => ({
       ...prev,
       isExpanded: expanded,
       isCompact: !expanded,
     }));
+
+    // Set a timeout to force compact mode after expanding
+    if (!expanded) {
+      forceCompactTimeoutRef.current = setTimeout(() => {
+        const currentScrollY = window.scrollY;
+        setState(prev => ({
+          ...prev,
+          isCompact: !prev.isAtTop && currentScrollY > 10,
+          isExpanded: false
+        }));
+      }, 300);
+    }
   }, []);
 
   return {
