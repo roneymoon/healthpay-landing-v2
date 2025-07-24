@@ -65,8 +65,8 @@ const BlogsCarousel: FC = () => {
       <LayoutWrapper>
         <div className={styles.header}>
           <SectionHeading 
-            title="Latest Insights" 
-            subtitle="Stay updated with the latest developments in AI-powered healthcare and insurance technology" 
+            badgeText="Blog" 
+            heading="Latest Insights" 
           />
         </div>
         
