@@ -67,10 +67,18 @@ export default function Footer() {
   const socialLinksOpacity = useTransform(scrollYProgress, [0.3, 0.7, 1], [0, 0.7, 1]);
   
   // Pre-calculate transforms for individual social links
-  const socialLinkTransforms = socialLinks.map((_, index) => ({
-    y: useTransform(scrollYProgress, [0.4, 1], [20, 0]),
-    opacity: useTransform(scrollYProgress, [0.4 + index * 0.05, 0.7 + index * 0.05, 1], [0, 0.8, 1]),
-  }));
+  const socialLinkY = useTransform(scrollYProgress, [0.4, 1], [20, 0]);
+  const socialLink0Opacity = useTransform(scrollYProgress, [0.4, 0.7, 1], [0, 0.8, 1]);
+  const socialLink1Opacity = useTransform(scrollYProgress, [0.45, 0.75, 1], [0, 0.8, 1]);
+  const socialLink2Opacity = useTransform(scrollYProgress, [0.5, 0.8, 1], [0, 0.8, 1]);
+  const socialLink3Opacity = useTransform(scrollYProgress, [0.55, 0.85, 1], [0, 0.8, 1]);
+  
+  const socialLinkTransforms = [
+    { y: socialLinkY, opacity: socialLink0Opacity },
+    { y: socialLinkY, opacity: socialLink1Opacity },
+    { y: socialLinkY, opacity: socialLink2Opacity },
+    { y: socialLinkY, opacity: socialLink3Opacity },
+  ];
   
   // Pre-calculate transforms for contact section
   const contactY = useTransform(scrollYProgress, [0.5, 1], [40, 0]);

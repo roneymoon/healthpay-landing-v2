@@ -133,7 +133,7 @@ const Header = () => {
   const containerStyle = useMemo(() => ({ 
     minHeight: isCompact ? "3rem" : "4rem",
     maxHeight: isCompact ? "3rem" : "4rem",
-    pointerEvents: isTransitioning ? "none" : "auto",
+    pointerEvents: (isTransitioning ? "none" : "auto") as "none" | "auto",
     transition: "all 0.3s ease-in-out"
   }), [isCompact, isTransitioning]);
 

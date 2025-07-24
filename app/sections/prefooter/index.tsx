@@ -4,7 +4,6 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Link from "next/link";
 import { MdArrowOutward } from "react-icons/md";
-import LayoutWrapper from "@/components/layout-wrapper";
 
 const socialLinks = [
   { name: "Book a Demo", href: "https://cal.com/bhavishramaswamy/30min" },
@@ -60,10 +59,18 @@ const PreFooter = () => {
   const contactOpacity = useTransform(scrollYProgress, [0.6, 0.9, 1], [0, 0.8, 1]);
   
   // Pre-calculate transforms for individual social links
-  const socialLinkTransforms = socialLinks.map((_, index) => ({
-    y: useTransform(scrollYProgress, [0.5, 1], [20, 0]),
-    opacity: useTransform(scrollYProgress, [0.5 + index * 0.05, 0.8 + index * 0.05, 1], [0, 0.8, 1]),
-  }));
+  const socialLinkY = useTransform(scrollYProgress, [0.5, 1], [20, 0]);
+  const socialLink0Opacity = useTransform(scrollYProgress, [0.5, 0.8, 1], [0, 0.8, 1]);
+  const socialLink1Opacity = useTransform(scrollYProgress, [0.55, 0.85, 1], [0, 0.8, 1]);
+  const socialLink2Opacity = useTransform(scrollYProgress, [0.6, 0.9, 1], [0, 0.8, 1]);
+  const socialLink3Opacity = useTransform(scrollYProgress, [0.65, 0.95, 1], [0, 0.8, 1]);
+  
+  const socialLinkTransforms = [
+    { y: socialLinkY, opacity: socialLink0Opacity },
+    { y: socialLinkY, opacity: socialLink1Opacity },
+    { y: socialLinkY, opacity: socialLink2Opacity },
+    { y: socialLinkY, opacity: socialLink3Opacity },
+  ];
 
   return (
     <div ref={containerRef} className="relative h-[102vh]">
